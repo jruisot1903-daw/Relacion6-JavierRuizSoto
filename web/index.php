@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . "/cabecera.php");
 inicioCabecera("LA TIENDA DE SOTILLO");
 cabecera();
 finCabecera();
-inicioCuerpo("TIENDA");
+inicioCuerpo("SOTILLO SHOP");
 cuerpo();  //llamo a la vista
 finCuerpo();
 // **********************************************************
