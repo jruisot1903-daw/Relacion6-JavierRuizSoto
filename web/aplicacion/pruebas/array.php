@@ -1,0 +1,65 @@
+<?php
+include_once(dirname(__FILE__) . "/../../cabecera.php");
+$barraUbi = [
+    [
+        "TEXTO" => "inicio",
+        "LINK" => "/index.php"
+    ],
+    [
+        "TEXTO" => "Pruebas",
+        "LINK" => "/aplicacion/pruebas/index.php"
+    ],
+    [
+        "TEXTO" => "Array",
+        "LINK" =>  "/aplicacion/pruebas/array.php"
+    ]
+];
+
+
+define("NUME",25);
+const NUME1=56;
+        
+        
+//controlador
+//dibuja la plantilla de la vista
+inicioCabecera("APLICACION PRIMER TRIMESTRE");
+cabecera();
+finCabecera();
+inicioCuerpo("ARRAY",$barraUbi);
+cuerpo(); //llamo a la vista
+finCuerpo();
+// **********************************************************
+
+//vista
+function cabecera() {}
+//vista
+function cuerpo()
+{
+
+     $miArray[3]=23;
+     $miArray[7]=1234;
+     $miArray[]=54;
+     
+      $total=0;
+
+      $final=count($miArray);
+      for($i=0;$i<$final;$i++){
+           if (isset($miArray[$i]))
+                $total+=$miArray[$i];
+               else
+                 $final++;
+    }
+
+     $miArray["nueva"]=24;
+
+
+    $total=0;
+    $total1=0;
+    foreach($miArray as $i=>$valor)
+        {
+            $total+=$miArray[$i];
+            $total1+=$valor;
+        }
+}
+
+

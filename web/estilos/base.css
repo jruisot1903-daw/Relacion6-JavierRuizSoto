@@ -1,0 +1,558 @@
+@charset "UTF-8";
+
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'BO2';
+  src: url('./black-ops-2-cdnfonts/blops.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  /* El descriptor size-adjust escala ligeramente la fuente original para que 
+     al saltar a la fuente de respaldo (tildes) no se note el cambio de tamaño */
+  size-adjust: 105%; 
+}
+
+body {
+  margin: 0;
+  padding: 30px 15px;
+  background-image: url(../imagenes/Designer.png);
+  background-repeat: no-repeat;
+  background-color: #000000;
+  /* background: radial-gradient(circle, #1a1c1e 0%, #0d0e10 100%); */
+  /* Interfaz limpia estilo menús reales de Call of Duty */
+  font-family: 'Segoe UI', Impact, Arial, sans-serif;
+  font-size: 18px;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+title{
+  font-family: 'BO2', Impact, 'Arial Black', sans-serif;
+  color: #ff5500;
+  font-weight: bold;
+}
+
+/* #barraUbicacion {
+   Apuntamos primero a BO2. Si hay tildes, saltará a Impact y Arial Black manteniendo el bloque militar 
+  font-family: 'BO2', Impact, 'Arial Black', sans-serif;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  letter-spacing: 1.5px;
+}
+
+#barraUbicacion a:link,
+#barraUbicacion a:visited {
+  text-decoration: none;
+  color: #ff5500;
+  font-weight: bold;
+}
+
+#barraUbicacion a:hover {
+  background-color: rgba(255, 85, 0, 0.2);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+} */
+
+/* --- BARRA UBICACIÓN: DISEÑO TÁCTICO MINIMALISTA --- */
+#barraUbicacion {
+  font-family: 'BO2', Impact, 'Arial Black', sans-serif;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  letter-spacing: 2px;
+  
+  padding: 10px 0;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  
+  /* Una línea gris muy fina abajo por defecto */
+  border-bottom: 1px solid #2a2f35;
+  transition: border-color 0.25s ease;
+}
+
+/* Cambia sutilmente el borde inferior al pasar el ratón por la barra */
+#barraUbicacion:hover {
+  border-color: #4b5563;
+}
+
+/* --- ENLACES EN LA BARRA --- */
+#barraUbicacion a:link,
+#barraUbicacion a:visited {
+  text-decoration: none;
+  color: #9ca3af;
+  padding: 2px 8px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* Efecto al pasar por encima del enlace */
+#barraUbicacion a:hover {
+  color: #ffffff; /* El texto se ilumina en blanco */
+  background-color: rgba(255, 85, 0, 0.1); /* Fondo naranja muy sutil */
+}
+
+/* Un pequeño punto indicador debajo del enlace activo/hover */
+#barraUbicacion a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  background-color: #ff5500;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#barraUbicacion a:hover::after {
+  opacity: 1; /* El punto aparece justo debajo de la palabra al apuntarla */
+}
+
+
+
+#barraMenu {
+    display: flex;          
+    list-style: none;       
+    margin: 10px;      
+    padding: 1px;             
+    gap: 5px;              
+    background: rgba(18, 20, 23, 0.9);
+    font-size: small;
+}
+
+#barraMenu li{
+  border-left: 4px solid #ff5500;
+}
+
+#barraMenu li {
+    position: relative;
+}
+
+#barraMenu a {
+    display: inline-block;
+    text-decoration: none;  
+    color: #9ca3af;         
+    font-family: 'BO2', Impact, 'Arial Black', sans-serif; 
+    font-size: 0.9em;       
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 12px;
+    transition: all 0.15s ease-in-out;
+}
+
+/* --- EFECTO SELECCIÓN DE ARMA / MENÚ BO2 --- */
+#barraMenu a:hover {
+    color: #ffffff;         
+    text-shadow: 0 0 8px rgba(255, 85, 0, 0.8); 
+    transform: scale(1.03) translateX(2px);
+}
+
+/* Línea sutil que se expande por debajo al pasar el cursor */
+#barraMenu li::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 12px;
+    width: 0;
+    height: 2px;
+    background-color: #ff5500;
+    box-shadow: 0 0 8px #ff5500;
+    transition: width 0.15s ease-in-out;
+}
+
+#barraMenu li:hover::after {
+    width: calc(100% - 24px);
+}
+
+/* Reseteo para evitar que los enlaces visitados te rompan el naranja */
+#barraMenu a:visited {
+    color: #9ca3af;
+}
+#barraMenu a:hover:visited {
+    color: #ffffff;
+}
+
+#documento {
+  width: 1000px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 15px;
+  background-color: #121417;
+  border: 2px solid #2a2f35;
+  border-radius: 10px; 
+  overflow: hidden;
+  box-shadow:
+    0 0 25px rgba(0, 0, 0, 0.85),
+    inset 0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+
+header{
+  padding: 15px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+#cabecera {
+  display: flex;         
+  align-items: center;   
+  gap: 20px;             
+  background: linear-gradient(135deg, #1c1f24 70%, #ff5500 100%);
+  color: #ffffff;
+  padding: 20px;
+  border-bottom: 3px solid #ff5500;
+  position: relative;
+}
+
+#mp{
+  width: 100px;
+  height: 100px;
+}
+
+#cabecera::after {
+  position: absolute;
+  right: 15px;
+  top: 5px;
+  font-family: 'BO2', Impact, sans-serif;
+  font-size: 0.55em;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+}
+
+#cabecera #logo {
+  width: 75px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 0px;
+  border: 1px solid #ff5500;
+  filter: grayscale(30%) contrast(120%);
+}
+
+#cabecera #titulo {
+  margin: 0;
+  /* Combinación híbrida perfecta para títulos con tildes o caracteres en español */
+  font-family: 'BO2', Impact, 'Arial Black', sans-serif;
+  font-size: 2.1em; 
+  font-weight: normal; 
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 85, 0, 0.6);
+}
+
+.boton {
+  display: inline-block;
+  font-family: 'BO2', Impact, 'Arial Black', sans-serif;
+  font-size: 0.85em;
+  background-color: #1f2326;
+  color: #ff5500;
+  border: 1px solid #ff5500;
+  border-radius: 0px;
+  padding: 8px 16px;
+  margin: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.15s ease-in-out;
+}
+
+.boton a {
+  text-decoration: none;
+  color: #ff5500;
+}
+
+a {
+  text-decoration: none;
+  color: #ff5500;
+}
+
+a:hover{
+  color: #b63d00;
+}
+
+a:visited{
+    color: #b63d00;
+}
+
+.boton a:visited {
+  color: #ff5500;
+}
+
+.boton:hover {
+  background-color: #ff5500;
+  color: #000000;
+  transform: scale(1.02);
+  box-shadow: 0 0 15px rgba(255, 85, 0, 0.7);
+}
+
+.boton a:hover {
+  color: #000000;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #15181c;
+  overflow: hidden;
+  border: 1px solid #2a2f35;
+}
+
+.tabla th {
+  font-family: 'BO2', Impact, 'Arial Black', sans-serif;
+  background-color: #1c1f24;
+  color: #00d2ff; /* Azul HUD cibernético de BO2 */
+  padding: 12px;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #00d2ff;
+}
+
+.tabla td {
+  padding: 11px 12px;
+  border-bottom: 1px solid #22262b;
+  /* Monospace completo para números y datos para que queden alineados */
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.95em;
+  font-weight: bold;
+}
+
+.tabla tr.par {
+  background-color: #181b20;
+  color: #d1d5db;
+}
+
+.tabla tr.impar {
+  background-color: #131518;
+  color: #d1d5db;
+}
+
+.tabla tr:hover {
+  background-color: rgba(0, 210, 255, 0.1); 
+  color: #ffffff;
+  transition: background-color 0.1s ease;
+}
+
+#pie {
+  font-family: 'BO2', Impact, sans-serif;
+  background-color: #0d0e10;
+  color: #4b5563;
+  font-size: 0.75em;
+  padding: 15px;
+  text-align: center;
+  border-top: 2px solid #2a2f35;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.for_texto {
+  width: 100%;
+  border: 1px solid #374151;
+  background-color: #181b20;
+  color: #ffffff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 0px;
+  outline: none;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1em;
+  transition: all 0.2s ease;
+}
+
+.for_texto:focus {
+  border-color: #00d2ff;
+  background-color: #1c2127;
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+}
+
+/* --- MENSAJES DE ERROR --- */
+.error {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.4;
+
+    color: #ff5555;
+    background-color: rgba(255, 40, 40, 0.12);
+
+    border-left: 3px solid #ff3333;
+    padding: 5px 10px;
+    margin: 5px 0 12px 0;
+
+    text-transform: none;
+    letter-spacing: normal;
+    overflow-wrap: anywhere;
+
+    text-shadow: 0 0 5px rgba(255, 50, 50, 0.4);
+    box-shadow: 0 0 8px rgba(255, 40, 40, 0.15);
+}
+
+/* ==========================================
+   FORMULARIO
+========================================== */
+
+.formulario {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 0;
+}
+
+.formulario form {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Campos de texto y números */
+.formulario input[type="text"],
+.formulario input[type="password"],
+.formulario input[type="number"] {
+    max-width: 100%;
+    padding: 5px;
+    margin: 4px 0;
+
+    background-color: #ffffff;
+    color: #111111;
+
+    border: 1px solid #777777;
+    border-radius: 2px;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+/* Anchura de los campos principales */
+.formulario input[type="text"],
+.formulario input[type="password"] {
+    width: 180px;
+}
+
+/* Campos de fecha del carnet */
+.formulario input[name="dia_carnet"],
+.formulario input[name="mes_carnet"] {
+    width: 65px;
+}
+
+.formulario input[name="ano_carnet"] {
+    width: 85px;
+}
+
+/* Campos numéricos */
+.formulario input[name="hermanos"] {
+    width: 70px;
+}
+
+.formulario input[name="sueldo"] {
+    width: 115px;
+}
+
+/* Radio buttons y checkboxes */
+.formulario input[type="radio"],
+.formulario input[type="checkbox"] {
+    accent-color: #ff5500;
+    margin-right: 7px;
+}
+
+/* Etiquetas */
+.formulario label {
+    color: #ff5500;
+}
+
+/* Botón de enviar */
+.formulario input[type="submit"] {
+    background-color: #1f2326;
+    color: #ff5500;
+    border: 1px solid #ff5500;
+
+    padding: 8px 18px;
+    margin-top: 10px;
+
+    font-family: 'BO2', Impact, Arial, sans-serif;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.2s;
+}
+
+.formulario input[type="submit"]:hover {
+    background-color: #ff5500;
+    color: #000000;
+    box-shadow: 0 0 12px rgba(255, 85, 0, 0.6);
+}
+
+
+/* --- MENSAJES DE ERROR DEL FORMULARIO --- */
+.error-campo {
+    display: inline-block;
+    color: #ff4d4d;
+    background-color: rgba(255, 77, 77, 0.12);
+    border-left: 3px solid #ff4d4d;
+    padding: 3px 8px;
+    margin: 3px 5px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 0.35em;
+    font-weight: bold;
+    text-transform: none;
+    letter-spacing: normal;
+    text-shadow: 0 0 5px rgba(255, 77, 77, 0.4);
+}
+
+/* --- KILLFEED INYECTADA POR CSS PURO (SIN TOCAR HTML) --- */
+
+body::before {
+  white-space: pre; 
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 2.2;
+  text-align: right;
+
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
+  pointer-events: none;
+  background-color: rgba(11, 13, 15, 0.75);
+  padding: 10px 15px;
+  border-right: 4px solid #ff5500;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  content: "";
+  animation: killfeedInyectada 16s infinite steps(1);
+}
+
+/* --- ANIMACIÓN EN BUCLE CON LAS BAJAS DE LA PARTIDA --- */
+@keyframes killfeedInyectada {
+  /* Baja 1 */
+  0%, 24% {
+    content: "xX_Annihilator_Xx [AN-94] ToxicPlayer_99";
+    color: #ff5500; 
+  }
+  /* Baja 2 */
+  25%, 49% {
+    content: "Alfa_Sniper [DSR-50] CamperHunter\A xX_Annihilator_Xx [SCAR-H] ToxicPlayer_99";
+    color: #ff5500;
+  }
+  /* Baja 3 */
+  50%, 74% {
+    content: "ToxicPlayer_99 [MSMC] xX_Annihilator_Xx\A Alfa_Sniper [DSR-50] CamperHunter";
+    color: #ff5500;
+  }
+  /* Baja 4 */
+  75%, 100% {
+    content: "Ghost_BO2 [KNIFE] NoobMaster7\A ToxicPlayer_99 [MSMC] xX_Annihilator_Xx";
+    color: #ff5500;
+  }
+}
