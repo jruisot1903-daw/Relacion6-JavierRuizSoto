@@ -2,16 +2,22 @@
 
 abstract class MuebleBase
 {
-    protected const MAXIMO_MUEBLES = 1;
-    protected static int $_mueblesCreados = 0;
+    public const MAXIMO_MUEBLES = 1;
+    private static int $_mueblesCreados = 0;
 
-    protected string $_nombre;
-    protected string $_fabricante = "FaMu:";
-    protected string $_pais = "España";
-    protected int $_anio = 2020;
-    protected string $_fechaIniVenta = "01/01/2020";
-    protected string $_fechaFinVenta = "31/12/2040";
-    protected float $_precio = 30.00;
+    private string $_nombre;
+    private string $_fabricante = "FaMu:";
+    private string $_pais = "España";
+    private int $_anio = 2020;
+    private string $_fechaIniVenta = "01/01/2020";
+    private string $_fechaFinVenta = "31/12/2040";
+    private float $_precio = 30.00;
+
+    // CONSTRUCTOR
+    public function __construct(){
+
+    }
+
 
     // GETTERS AND SETTERS
 
@@ -72,6 +78,35 @@ abstract class MuebleBase
             return true;
         }else{
             return false;
+        }
+    }
+
+    public function getFechaIniVenta():string{
+        return $this->_fechaIniVenta;
+    }
+
+    public function setFechaIniVenta():bool{
+
+    }
+
+    public function getFechaFinVenta():string{
+        return $this->_fechaFinVenta;
+    }
+
+    public function setFechaFinVenta():bool{
+
+    }
+
+    public function getPrecio():float{
+        return $this->_precio;
+    }
+
+    public function setPrecio(float $precio):bool{
+        if(!is_float($precio) && $precio < 30){
+            return false;
+        }else{
+            $this->_precio = $precio;
+            return true;
         }
     }
 }
