@@ -11,7 +11,7 @@ if (MODO_TRABAJO=="produccion")
 date_default_timezone_set("Europe/Berlin");
 
 spl_autoload_register(function ($clase){
-    $ruta=RUTABASE."/scripts/clases/";
+    $ruta=RUTABASE."/scripts/clases/curso2026/";
     $fichero=$ruta."$clase.php";
     
     if (file_exists($fichero))
