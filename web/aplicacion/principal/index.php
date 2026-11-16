@@ -49,6 +49,7 @@ function cuerpo(array $muebles, ?int $seleccion, string $mensajeError)
             <th>Fabricante</th>
             <th>País</th>
             <th>Precio</th>
+            <th>Material</th>
         </tr>
         <?php foreach ($muebles as $indice => $mueble) { ?>
             <tr>
@@ -58,6 +59,7 @@ function cuerpo(array $muebles, ?int $seleccion, string $mensajeError)
                 <td><?php echo esc($mueble->getFabricante()); ?></td>
                 <td><?php echo esc($mueble->getPais()); ?></td>
                 <td><?php echo esc($mueble->getPrecio()); ?></td>
+                <td><?php echo esc($mueble->getMaterial());?></td>
             </tr>
         <?php } ?>
     </table>
@@ -106,6 +108,7 @@ function mostrarMueble(MuebleBase $mueble)
         Inicio de venta: <?php echo esc($mueble->getFechaIniVenta()); ?><br>
         Fin de venta: <?php echo esc($mueble->getFechaFinVenta()); ?><br>
         Precio: <?php echo esc($mueble->getPrecio()); ?><br>
+        Material: <?php echo esc($mueble->getMaterial());?><br>
         <?php
         // Propiedades adicionales, obtenidas con el método damePropiedadesAdicionales
         foreach ($mueble->damePropiedadesAdicionales() as $propiedad) {

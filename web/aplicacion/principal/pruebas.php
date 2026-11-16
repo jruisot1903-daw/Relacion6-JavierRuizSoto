@@ -8,11 +8,17 @@ $barraUbi = [
     ["TEXTO" => "Pruebas", "LINK" => "/aplicacion/principal/pruebas.php"],
 ];
 
+// Obtener todos los casos posibles del enum
+$material = Materiales::casos();
+
+// Elegir uno aleatorio
+$materialAleatorio = $material[array_rand($material)];
+
 //dibuja la plantilla de la vista
 inicioCabecera("LA TIENDA DE SOTILLO");
 finCabecera();
 inicioCuerpo("PRUEBAS", $barraUbi);
-cuerpo();  //llamo a la vista
+cuerpo($materialAleatorio);  //llamo a la vista
 finCuerpo();
 // **********************************************************
 
@@ -26,7 +32,7 @@ function linea(string $texto, mixed $valor = null): void
 }
 
 //vista
-function cuerpo()
+function cuerpo($material)
 {
     echo "<pre>\n";
 
@@ -36,7 +42,7 @@ function cuerpo()
     linea("toString", (string) $r);
 
     linea("== MuebleTradicional con valores incorrectos (se asignan los de por defecto) ==");
-    $t = new MuebleTradicional('Aparador', 'Rustico', 'UN PAIS CON UN NOMBRE DEMASIADO LARGO', 1999, '32/13/2021', '01/01/2000', 5, 1000, '');
+    $t = new MuebleTradicional('Aparador', 'Rustico', 'UN PAIS CON UN NOMBRE DEMASIADO LARGO', 1999, '32/13/2021', '01/01/2000', 5, 1000, $material);
     linea("toString", (string) $t);
 
     linea("== Nombre vacío: lanza excepción ==");

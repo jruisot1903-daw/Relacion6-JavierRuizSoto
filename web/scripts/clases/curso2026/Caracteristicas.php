@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Clase Caracteristicas.
  * Almacena características creadas de forma dinámica (pares nombre => valor).
@@ -67,6 +68,28 @@ class Caracteristicas implements IteratorAggregate
             return (string) $valor;
         }
         return json_encode($valor, JSON_UNESCAPED_UNICODE);
+    }
+
+    /** Caractetistica numero_serie
+     * No se guarda el valor 
+     * Se devuelve la secuencia de 15 digitos aleatorios (cada vez que se devuelve sera distinto)
+     * 
+     */
+    public function numero_serie()
+    {
+        $cadena = '';
+        for ($i = 0; $i < 14; $i++) {
+            // Generar un número ASCII válido
+            $ascii = rand(48, 122);
+
+            // Validar que esté dentro de los rangos permitidos
+            if (($ascii >= 48 && $ascii <= 57)) { // numeros 0-9
+                $cadena .= chr($ascii);
+            } else {
+                $i--; // Repetir el ciclo si el carácter no es válido
+            }
+        }
+        return $cadena;
     }
 
     /** Formato car1:valor1;car2:valor2;... (en orden de incorporación). */

@@ -19,6 +19,7 @@ abstract class MuebleBase
     private string $fechaIniVenta = '01/01/2020';
     private string $fechaFinVenta = '31/12/2040';
     private float $precio = 30;
+    private Materiales $material;
     private Caracteristicas $caracteristicas;
 
     /**
@@ -33,7 +34,8 @@ abstract class MuebleBase
         int $anio = 2020,
         string $fechaIniVenta = '01/01/2020',
         string $fechaFinVenta = '31/12/2040',
-        float $precio = 30
+        float $precio = 30,
+        Materiales $material = Materiales::Hierro
     ) {
         if (!self::puedeCrear()) {
             throw new RuntimeException('Se ha superado el máximo de muebles (' . self::MAXIMO_MUEBLES . ').');
@@ -61,6 +63,7 @@ abstract class MuebleBase
         if (!$this->setPrecio($precio)) {
             $this->setPrecio(30);
         }
+        $this-> setMaterial($material);
         self::$mueblesCreados++;
     }
 
@@ -198,6 +201,22 @@ abstract class MuebleBase
     public function getPrecio(): float
     {
         return $this->precio;
+    }
+
+    // --------- Materiales -----------
+
+    public function setMaterial(Materiales $material){
+        $this->material = $material;
+        
+        return $this;
+    }
+
+    public function getMaterial(): string{
+        return $this->material->descripcion();
+    }
+
+    public function getMaterialDescripcion(){
+        return " de material {$this->material->descripcion()}";
     }
 
     // ---------- Características ----------

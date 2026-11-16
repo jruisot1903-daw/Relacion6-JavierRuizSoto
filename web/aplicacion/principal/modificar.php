@@ -1,6 +1,8 @@
 <?php
 include_once(dirname(__FILE__) . "/../../cabecera.php");
 
+// NO ME HA DADO TIEMPO A HACER LO DE MODIFICAR EL MATERIAL
+
 /**
  * Escapa un texto para mostrarlo en HTML.
  */
@@ -48,7 +50,7 @@ function valoresDeMueble(MuebleBase $mueble): array
     ];
     if ($mueble instanceof MuebleReciclado) {
         $valores['porcentaje'] = $mueble->getPorcentajeReciclado();
-    } else {
+    } else if($mueble instanceof MuebleTradicional) {
         $valores['peso'] = $mueble->getPeso();
         $valores['serie'] = $mueble->getSerie();
     }
@@ -168,7 +170,7 @@ function aplicarDatos(MuebleBase $mueble, array $d): void
     $mueble->setPrecio($d['precio']);
     if ($mueble instanceof MuebleReciclado) {
         $mueble->setPorcentajeReciclado($d['porcentaje']);
-    } else {
+    } else if($mueble instanceof MuebleTradicional) {
         $mueble->setPeso($d['peso']);
         $mueble->setSerie($d['serie']);
     }
