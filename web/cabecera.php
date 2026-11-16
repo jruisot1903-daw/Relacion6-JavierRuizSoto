@@ -26,5 +26,5 @@ spl_autoload_register(function ($clase){
 
 include(RUTABASE."/aplicacion/plantilla/plantilla.php");
 include(RUTABASE."/scripts/libreria/validacion.php");
-
+include(RUTABASE."/scripts/datos.php");
 //creo todos los objetos que necesita mi aplicación

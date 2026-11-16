@@ -1,24 +1,4 @@
 <?php
-include_once(dirname(__FILE__) . "/cabecera.php");
-//controlador
-
-//dibuja la plantilla de la vista
-inicioCabecera("LA TIENDA DE SOTILLO");
-cabecera();
-finCabecera();
-inicioCuerpo("");
-cuerpo();  //llamo a la vista
-finCuerpo();
-// **********************************************************
-
-//vista
-function cabecera() {}
-
-//vista
-function cuerpo()
-{
-?>
-    <br><br>
-    <a href="./aplicacion/pruebas/index.php">Pruebas</a>
-<?php
-}
+// Redirección automática a la página principal de la aplicación
+header("Location: /aplicacion/principal/index.php");
+exit;

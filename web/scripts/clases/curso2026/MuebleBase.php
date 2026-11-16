@@ -1,159 +1,261 @@
 <?php
-
+/**
+ * Clase abstracta MuebleBase.
+ * Las propiedades son privadas: solo se accede mediante set/get.
+ * Los set devuelven true y asignan si el valor es correcto; si no, devuelven false y no asignan nada.
+ */
 abstract class MuebleBase
 {
-    public const MAXIMO_MUEBLES = 1;
-    private static int $_mueblesCreados = 0;
+    /** Número máximo de muebles que se pueden crear. */
+    public const MAXIMO_MUEBLES = 20;
 
-    private string $_nombre;
-    private string $_fabricante = "FaMu:";
-    private string $_pais = "España";
-    private int $_anio = 2020;
-    private string $_fechaIniVenta = "01/01/2020";
-    private string $_fechaFinVenta = "31/12/2040";
-    private float $_precio = 30.00;
+    /** Número de muebles (instancias) creados hasta el momento. */
+    private static int $mueblesCreados = 0;
 
-    // CONSTRUCTOR
-    public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "España", int $anio = 2020, string $fechaIniVenta = "01/01/2020", string $fechaFinVenta = "31/12/2040", float $precio = 30.00)
-    {
-        if (self::$_mueblesCreados >= self::MAXIMO_MUEBLES) {
-            throw new Exception("Se ha superado el maximo de las instancias");
+    private string $nombre = '';
+    private string $fabricante = 'FaMu:';
+    private string $pais = 'ESPAÑA';
+    private int $anio = 2020;
+    private string $fechaIniVenta = '01/01/2020';
+    private string $fechaFinVenta = '31/12/2040';
+    private float $precio = 30;
+    private Caracteristicas $caracteristicas;
+
+    /**
+     * Constructor. El nombre es obligatorio: si no es válido se lanza una excepción.
+     * Para el resto de campos, si el set falla se asigna el valor por defecto.
+     * Si se ha superado el máximo de instancias también se lanza una excepción.
+     */
+    public function __construct(
+        string $nombre,
+        string $fabricante = 'FaMu:',
+        string $pais = 'ESPAÑA',
+        int $anio = 2020,
+        string $fechaIniVenta = '01/01/2020',
+        string $fechaFinVenta = '31/12/2040',
+        float $precio = 30
+    ) {
+        if (!self::puedeCrear()) {
+            throw new RuntimeException('Se ha superado el máximo de muebles (' . self::MAXIMO_MUEBLES . ').');
         }
-
         if (!$this->setNombre($nombre)) {
-            throw new Exception("Nombre invalido");
+            throw new InvalidArgumentException('El nombre del mueble no es válido.');
         }
+        $this->caracteristicas = new Caracteristicas();
 
-        $this->setFabricante($fabricante);
-        $this->setPais($pais);
-        $this->setAnio($anio);
-        $this->setFechaIniVenta($fechaIniVenta);
-        $this->setFechaFinVenta($fechaFinVenta);
-        $this->setPrecio($precio);
-
-        self::$_mueblesCreados++;
+        if (!$this->setFabricante($fabricante)) {
+            $this->setFabricante('FaMu:');
+        }
+        if (!$this->setPais($pais)) {
+            $this->setPais('ESPAÑA');
+        }
+        if (!$this->setAnio($anio)) {
+            $this->setAnio(2020);
+        }
+        if (!$this->setFechaIniVenta($fechaIniVenta)) {
+            $this->setFechaIniVenta('01/01/' . $this->anio);
+        }
+        if (!$this->setFechaFinVenta($fechaFinVenta)) {
+            $this->setFechaFinVenta('31/12/2040');
+        }
+        if (!$this->setPrecio($precio)) {
+            $this->setPrecio(30);
+        }
+        self::$mueblesCreados++;
     }
 
-
-    // GETTERS AND SETTERS
-
-    public function getNombre(): string
+    /** No se permite la sobrecarga dinámica de propiedades. */
+    public function __set(string $nombre, mixed $valor): void
     {
-        return $this->_nombre;
+        throw new Error("No se puede asignar la propiedad '$nombre': use los métodos set.");
     }
 
+    /** Tampoco se puede leer directamente ninguna propiedad. */
+    public function __get(string $nombre): mixed
+    {
+        throw new Error("No se puede acceder a la propiedad '$nombre': use los métodos get.");
+    }
+
+    /** Convierte una fecha dd/mm/aaaa en aaaammdd para poder compararlas. */
+    protected static function claveFecha(string $fecha): string
+    {
+        [$d, $m, $a] = explode('/', $fecha);
+        return sprintf('%04d%02d%02d', $a, $m, $d);
+    }
+
+    // ---------- Nombre ----------
     public function setNombre(string $nombre): bool
     {
-        $nombre = mb_strtoupper($nombre);
-        if (validaCadena($nombre, 40, "")) {
-            $this->_nombre = $nombre;
-            return true;
-        } else {
+        $valor = mb_strtoupper(trim($nombre));
+        if ($valor === '') {
             return false;
         }
+        $aux = $valor;
+        if (!validaCadena($aux, 40, '')) {
+            return false;
+        }
+        $this->nombre = $valor;
+        return true;
     }
-
-    public function getFabricante(): string
+    public function getNombre(): string
     {
-        return $this->_fabricante;
+        return $this->nombre;
     }
 
+    // ---------- Fabricante ----------
     public function setFabricante(string $fabricante): bool
     {
-        if (!str_starts_with($fabricante, "FaMu:")) {
-            $fabricante = "FaMu:" . $fabricante;
+        $valor = trim($fabricante);
+        if (!str_starts_with($valor, 'FaMu:')) {
+            $valor = 'FaMu:' . $valor;
         }
-
-        if (validaCadena($fabricante, 30, "FaMu:")) {
-                $this->_fabricante = $fabricante;
-                return true;
-        } else {
-            return false;
-        }
+        $this->fabricante = mb_substr($valor, 0, 30);
+        return true;
     }
-
-    public function getPais(): string
+    public function getFabricante(): string
     {
-        return $this->_pais;
+        return $this->fabricante;
     }
 
+    // ---------- País ----------
     public function setPais(string $pais): bool
     {
-        if (validaCadena($pais, 20, "España")) {
-            $this->_pais = $pais;
-            return true;
-        } else {
+        $valor = trim($pais);
+        if ($valor === '' || !validaCadena($valor, 20, 'ESPAÑA')) {
             return false;
         }
+        $this->pais = $valor;
+        return true;
     }
-
-    public function getAnio(): int
+    public function getPais(): string
     {
-        return $this->_anio;
+        return $this->pais;
     }
 
+    // ---------- Año ----------
     public function setAnio(int $anio): bool
     {
-        // Con el date("Y") obtenemos el año actual 
-        if (validaEntero($anio, 2020, date("Y"), 2020)) {
-            $this->_anio = $anio;
-            return true;
-        } else {
+        $valor = $anio;
+        if (!validaEntero($valor, 2020, (int) date('Y'), 2020)) {
             return false;
         }
+        $this->anio = $valor;
+        return true;
     }
-
-    public function getFechaIniVenta(): string
+    public function getAnio(): int
     {
-        return $this->_fechaIniVenta;
+        return $this->anio;
     }
 
+    // ---------- Fecha de inicio de venta ----------
     public function setFechaIniVenta(string $fecha): bool
     {
-        if (validaFecha($fecha, "01/01/2020")) {
-            $this->_fechaIniVenta = $fecha;
-            return true;
-        } else {
+        $valor = $fecha;
+        if (!validaFecha($valor, '01/01/' . $this->anio)) {
             return false;
         }
+        // No puede ser anterior al 1 de enero del año de inicio de fabricación
+        if (self::claveFecha($valor) < self::claveFecha('01/01/' . $this->anio)) {
+            return false;
+        }
+        $this->fechaIniVenta = $valor;
+        return true;
     }
-
-    public function getFechaFinVenta(): string
+    public function getFechaIniVenta(): string
     {
-        return $this->_fechaFinVenta;
+        return $this->fechaIniVenta;
     }
 
+    // ---------- Fecha de fin de venta ----------
     public function setFechaFinVenta(string $fecha): bool
     {
-        if (validaFecha($fecha, "31/12/2040")) {
-            // Una vez que comprobemos que la fecha de fin es una fecha valida 
-            // tenemos que pasarlo a date para poder compararlas    
-            $d1 = DateTime::createFromFormat('d/m/Y', $this->_fechaIniVenta);
-            $d2 = DateTime::createFromFormat('d/m/Y', $fecha);
-
-            if ($d2 >= $d1) {
-                $this->_fechaFinVenta = $fecha;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+        $valor = $fecha;
+        if (!validaFecha($valor, '31/12/2040')) {
             return false;
         }
+        // No puede ser anterior a la fecha de inicio de venta
+        if (self::claveFecha($valor) < self::claveFecha($this->fechaIniVenta)) {
+            return false;
+        }
+        $this->fechaFinVenta = $valor;
+        return true;
     }
-
-    public function getPrecio(): float
+    public function getFechaFinVenta(): string
     {
-        return $this->_precio;
+        return $this->fechaFinVenta;
     }
 
+    // ---------- Precio ----------
     public function setPrecio(float $precio): bool
     {
-        if (!is_float($precio) && $precio < 30) {
+        $valor = $precio;
+        if (!validaReal($valor, 30, PHP_FLOAT_MAX, 30)) {
             return false;
-        } else {
-            $this->_precio = $precio;
-            return true;
         }
+        $this->precio = $valor;
+        return true;
+    }
+    public function getPrecio(): float
+    {
+        return $this->precio;
+    }
+
+    // ---------- Características ----------
+    /**
+     * Añade características a partir de pares (nombre, valor): anadirCaracteristicas('saliente', true, 'precio', 300).
+     * Si el número de argumentos es impar se descarta el último.
+     * Devuelve el número de características indicadas.
+     */
+    public function anadirCaracteristicas(mixed ...$pares): int
+    {
+        $total = 0;
+        for ($i = 0; $i + 1 < count($pares); $i += 2) {
+            $this->caracteristicas->{(string) $pares[$i]} = $pares[$i + 1];
+            $total++;
+        }
+        return $total;
+    }
+    public function getCaracteristicas(): Caracteristicas
+    {
+        return $this->caracteristicas;
+    }
+
+    // ---------- Propiedades adicionales ----------
+    /** Será redefinido en las clases hijas: nombres de las propiedades adicionales. */
+    public function damePropiedadesAdicionales(): array
+    {
+        return [];
+    }
+
+    // ---------- Método de clase ----------
+    /**
+     * Devuelve true si se pueden crear más muebles.
+     * En $numero se devuelve cuántos muebles se pueden crear aún.
+     */
+    public static function puedeCrear(?int &$numero = null): bool
+    {
+        $numero = self::MAXIMO_MUEBLES - self::$mueblesCreados;
+        return $numero > 0;
+    }
+
+    // ---------- Conversión a cadena ----------
+    public function __toString(): string
+    {
+        $texto = 'MUEBLE de clase ' . static::class
+            . ' con nombre ' . $this->nombre
+            . ', fabricante ' . $this->fabricante
+            . ', fabricado en ' . $this->pais
+            . ' a partir del año ' . $this->anio
+            . ', vendido desde ' . $this->fechaIniVenta
+            . ' hasta ' . $this->fechaFinVenta
+            . ', precio ' . $this->precio;
+
+        foreach ($this->damePropiedadesAdicionales() as $propiedad) {
+            $texto .= ', ' . $propiedad . ' ' . $this->{'get' . $propiedad}();
+        }
+        if ($this->caracteristicas->cuantas() > 0) {
+            $texto .= ', características: ' . $this->caracteristicas;
+        }
+        return $texto;
     }
 }
